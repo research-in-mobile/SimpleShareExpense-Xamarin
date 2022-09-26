@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:prismbehaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Split.Views.BuildExpensePage"
+             AutomationId="BuildExpensePage"
+             x:Name="this">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate x:Key="EventDataTemplate">
+
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <StackLayout Margin="16,24">
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="Blue"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="CenterAndExpand" />
+
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="FillAndExpand">
+            <Button Text="X"
+                    TextColor="White"
+                    BackgroundColor="Black"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Command="{Binding GoBackCommand}" />
+
+            <Button Text="Done"
+                    HeightRequest="40"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="Center"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    Command="{Binding DoneCommand}" />
+        </StackLayout>
+
+
+        <Label Text="Item " />
+        <Entry Text="{Binding Expense.Title}" />
+
+        <Label Text="Cost " />
+        <Entry Text="{Binding Cost}" />
+
+        <Label Text="CurrencyType " />
+        <Entry Text="{Binding Expense.CurrencyType}" />
+
+        <Label Text="Rate " />
+        <Entry Text="{Binding ConvertaionRate}" />
+
+        <Label Text="Converted Cost " />
+        <Entry Text="{Binding ConvertedCost}" />
+
+        <Label Text="Date" />
+        <DatePicker HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Format="D"
+                    Date="{Binding ExpenseDate}" />
+
+        <Label Text="{Binding DeltaSplitCost}" />
+
+        <Label Text="Assigned To or Paid By " />
+        <Picker Title="Assigned To or Paid By "
+                    ItemsSource="{Binding Entities}"
+                    ItemDisplayBinding="{Binding User.Name}"
+                    SelectedIndex="{Binding AssignedUserIndex, Mode=TwoWay}"/>
+
+        <ListView x:Name="Entities"
+                  ItemsSource="{Binding Entities}"
+                  CachingStrategy="RecycleElement"
+                  SeparatorVisibility="None"
+                  SelectionMode="None"
+                  HasUnevenRows="True">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <StackLayout Orientation="Horizontal"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="Fill"
+                                         Padding="16">
+
+                                <Switch IsToggled="{Binding IsSplitWith}"
+                                        OnColor="Green" />
+
+                                <Label Text="{Binding AllocatedCost}" />
+                                <Label Text="{Binding User.Name}" />
+                                <Label Text="{Binding AllocationPercentage}" />
+
+
+                            </StackLayout>
+
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+        <Button Text="Delete Expense"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="End"
+                BackgroundColor="Red"
+                TextColor="White"
+                Command="{Binding DeleteExpenseCommand}" />
+    </StackLayout>
+
+</ContentPage>

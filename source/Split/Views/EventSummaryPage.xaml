@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Split.Views.EventSummaryPage">
+
+    <ScrollView>
+        <StackLayout Margin="16,24">
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="BlueViolet"
+                               HeightRequest="40"
+                               WidthRequest="40"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand" />
+
+
+            <Button Text="X"
+                    TextColor="White"
+                    BackgroundColor="Black"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Command="{Binding GoBackCommand}" />
+
+
+            <Label Text="{Binding Event.Title}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center" />
+
+            <Label Text="{Binding EventCost}"
+                   HorizontalOptions="Start"
+                   VerticalTextAlignment="Center" />
+
+            <Label Text="{Binding NumberOfGuests}"
+                   HorizontalOptions="Start"
+                   VerticalTextAlignment="Center" />
+
+
+
+            <Label Text="{Binding Event.StartDate, StringFormat='{0:MMMM dd, yyyy}'}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center" />
+
+            <Label Text="{Binding Event.EndDate, StringFormat='{0:MMMM dd, yyyy}'}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center" />
+
+            <Label Text="{Binding EventSpan.Days}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center" />
+
+            <Label Text="Select Transaction Strategy " />
+            <Picker ItemsSource="{Binding TransactionStrategies}"
+                    ItemDisplayBinding="{Binding .}"
+                    SelectedIndex="{Binding SelectedTransactionStrategyIndex, Mode=TwoWay}"/>
+
+
+            <ScrollView Orientation="Horizontal"
+                        HorizontalScrollBarVisibility="Never">
+                <StackLayout BindableLayout.ItemsSource="{Binding UserEventExpenses}"
+                             FlowDirection="LeftToRight"
+                             Orientation="Horizontal">
+
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+
+                            <Frame Margin="4,4"
+                                   BorderColor="DarkGray"
+                                   BackgroundColor="OrangeRed">
+
+                                <Frame.Triggers>
+                                    <DataTrigger TargetType="Frame"
+                                                 Binding="{Binding IsPayable}"
+                                                 Value="false">
+                                        <Setter Property="BackgroundColor"
+                                                Value="LightGreen" />
+                                    </DataTrigger>
+                                </Frame.Triggers>
+
+                                <StackLayout Spacing="4"
+                                             HeightRequest="160"
+                                             WidthRequest="120"
+                                             Orientation="Vertical"
+                                             BackgroundColor="Transparent">
+
+                                    <Label Text="{Binding User.Name}"
+                                           TextColor="White"
+                                           HorizontalOptions="StartAndExpand"
+                                           VerticalOptions="Center" />
+
+                                    <Label Text="{Binding Cost}"
+                                           TextColor="White"
+                                           HorizontalOptions="StartAndExpand"
+                                           VerticalOptions="Center" />
+
+                                    <Label Text="{Binding Spend}"
+                                           TextColor="White"
+                                           HorizontalOptions="StartAndExpand"
+                                           VerticalOptions="Center" />
+
+                                    <Label Text="{Binding Balance}"
+                                           TextColor="White"
+                                           HorizontalOptions="StartAndExpand"
+                                           VerticalOptions="Center" />
+
+                                </StackLayout>
+                            </Frame>
+
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>
+
+
+        </StackLayout>
+        
+        
+    </ScrollView>
+
+</ContentPage>

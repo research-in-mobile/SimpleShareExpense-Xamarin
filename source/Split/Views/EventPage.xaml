@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:prismbehaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:fonts="clr-namespace:Split.Fonts;assembly=Split"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Split.Views.EventPage"
+             x:Name="Page"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate x:Key="ExpenseDataTemplate">
+
+                <Grid Padding="0"
+                      Margin="0"
+                      ColumnSpacing="0"
+                      RowSpacing="0">
+
+                    <Frame Margin="8"
+                           Padding="0"
+                           CornerRadius="60"
+                           BackgroundColor="Black">
+
+                        <StackLayout Orientation="Horizontal"
+                                     BackgroundColor="{StaticResource SecondaryColor}"
+                                     Spacing="16"
+                                     Padding="24,16">
+
+                            <Label Text="{Binding Title, Mode=TwoWay}"
+                                   TextColor="{StaticResource AltTextColor}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center" />
+
+                            <Label TextColor="{StaticResource AltTextColor}"
+                                   LineBreakMode="NoWrap"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding Cost}"
+                                              FontSize="16"
+                                              FontAttributes="Bold" />
+                                        <Span Text=" "
+                                              FontSize="16" />
+                                        <Span Text="{Binding CurrencyType}"
+                                              FontSize="12" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Label Text="{Binding AssignedUser.Name}"
+                                   TextColor="{StaticResource AltTextColor}"
+                                   FontSize="14"
+                                   LineBreakMode="TailTruncation"
+                                   HorizontalOptions="EndAndExpand"
+                                   VerticalOptions="Center" />
+
+
+
+                            <Label  Text="{x:Static fonts:FontAwesomeSolid.TrashAlt}"
+                                    FontFamily="{StaticResource FontAwesomeSolid}"
+                                    TextColor="{StaticResource AltTextColor}"
+                                    FontSize="16"
+                                    HorizontalOptions="End"
+                                    VerticalTextAlignment="Center"
+                                    Margin="16,0,0,0">
+
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference Page}, 
+                                                                        Path=BindingContext.DeleteExpenseCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.EditExpenseCommand, Source={x:Reference Page}}"
+                                                      CommandParameter="{Binding .}" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+                
+            </DataTemplate>
+
+            <DataTemplate x:Key="UserExpenseCardDataTemplate">
+
+                <Grid Padding="0"
+                      Margin="0"
+                      ColumnSpacing="0"
+                      RowSpacing="0">
+                    <Frame Margin="4"
+                           Padding="16,8"
+                           CornerRadius="16"
+                           BorderColor="Transparent"
+                           BackgroundColor="{StaticResource HighlightColor}">
+
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsPayable}"
+                                         Value="false">
+                                <Setter Property="BackgroundColor"
+                                        Value="{StaticResource PositiveStrongColor}" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+
+                        <StackLayout Spacing="2"
+                                     WidthRequest="120"
+                                     Orientation="Vertical"
+                                     BackgroundColor="Transparent">
+
+                            <Label Text="{Binding User.Name}"
+                                   TextColor="{StaticResource AltTextColor}"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Start" />
+
+                            <Label Text="Receivable Balance: "
+                                   TextColor="White"
+                                   FontSize="8"
+                                   HorizontalOptions="StartAndExpand"
+                                   VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsPayable}"
+                                                 Value="true">
+                                        <Setter Property="Text"
+                                                Value="Payable Balance" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Label Text="{Binding Balance}"
+                                   TextColor="{StaticResource AltTextColor}"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="StartAndExpand"
+                                   VerticalOptions="Center" />
+
+
+                            <Label TextColor="{StaticResource AltTextColor}"
+                                   HorizontalTextAlignment="Start"
+                                   VerticalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Cost: "
+                                              FontSize="8" />
+                                        <Span Text="{Binding Cost}"
+                                              FontSize="12" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Label TextColor="{StaticResource AltTextColor}"
+                                   HorizontalTextAlignment="Start"
+                                   VerticalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Spend: "
+                                              FontSize="8" />
+                                        <Span Text="{Binding Spend}"
+                                              FontSize="12" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+
+
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <AbsoluteLayout>
+        <StackLayout>
+            <Grid Padding="16,24"
+                  Margin="0"
+                  RowSpacing="0"
+                  ColumnSpacing="0"
+                  BackgroundColor="{StaticResource SecondaryColor}"
+                  VerticalOptions="FillAndExpand">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--HEADER-->
+                <StackLayout Grid.Row="0"
+                             Grid.Column="0"
+                             Padding="16,4,16,24"
+                             Spacing="0">
+
+                    <Label  Text="{Binding Event.Title}"
+                            TextColor="{StaticResource AltTextColor}"
+                            FontSize="24"
+                            FontAttributes="Bold"
+                            LineBreakMode="TailTruncation"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Padding="0,0" />
+
+                    <Label  Text="Total"
+                            TextColor="{StaticResource TertiaryColor}"
+                            FontSize="12"
+                            LineBreakMode="NoWrap"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            Padding="0,0" />
+
+                    <Label  Text="{Binding TotalExpense}"
+                            TextColor="{StaticResource AltTextColor}"
+                            FontSize="28"
+                            FontAttributes="Bold"
+                            LineBreakMode="NoWrap"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            Padding="0" />
+
+                    <Label  Text="Group Size"
+                            TextColor="{StaticResource TertiaryColor}"
+                            FontSize="12"
+                            LineBreakMode="TailTruncation"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            Padding="0" />
+
+                    <Label  Text="{Binding NumberOfGuests}"
+                            TextColor="{StaticResource AltTextColor}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            LineBreakMode="TailTruncation"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            Padding="0,0" />
+
+
+                    <Label  FontSize="12"
+                            TextColor="{StaticResource SecondaryTextColor}"
+                            HorizontalOptions="Start">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Event.StartDate, StringFormat='{0:dd MMM}'}" />
+                                <Span Text=" - " />
+                                <Span Text="{Binding Event.EndDate, StringFormat='{0:dd MMM}'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+
+                </StackLayout>
+
+                <!--EXPENSES-->
+                <CollectionView Grid.Row="1"
+                                ItemsLayout="HorizontalList"
+                                ItemsSource="{Binding UserExpenses}"
+                                ItemTemplate="{StaticResource UserExpenseCardDataTemplate}"
+                                ItemSizingStrategy="MeasureFirstItem"
+                                HeightRequest="120">
+                </CollectionView>
+
+                <Label Text="{x:Static fonts:FontAwesomeSolid.Edit}"
+                       FontFamily="{StaticResource FontAwesomeSolid}"
+                       TextColor="{StaticResource BackgroundColor}"
+                       FontSize="24"
+                       HorizontalTextAlignment="End"
+                       VerticalTextAlignment="Start"
+                       Padding="4">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding EditEventCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+            <CollectionView ItemsSource="{Binding Expenses}"
+                            ItemsLayout="VerticalList"
+                            ItemSizingStrategy="MeasureFirstItem"
+                            ItemTemplate="{StaticResource ExpenseDataTemplate}"
+                            Margin="8">
+
+            </CollectionView>
+
+        </StackLayout>
+
+
+        <Label Text="{x:Static fonts:FontAwesomeSolid.PlusCircle}"
+               FontFamily="{StaticResource FontAwesomeSolid}"
+               TextColor="{StaticResource HighlightColor}"
+               FontSize="40"
+               Margin="16"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="1, 1, AutoSize, 40">
+
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding AddExpenseCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+    </AbsoluteLayout>
+</ContentPage>
+

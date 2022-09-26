@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:fonts="clr-namespace:Split.Fonts;assembly=Split"
+             x:Class="Split.Views.BuildEventPage"
+             Title="{Binding Title}"
+             x:Name="Page"
+             Visual="Material"
+             >
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate x:Key="GuestDataTemplate">
+                <Frame  Padding="0"
+                        CornerRadius="60"
+                        BackgroundColor="Black">
+
+                    <StackLayout Orientation="Horizontal"
+                                 BackgroundColor="{StaticResource SecondaryColor}"
+                                 Spacing="16"
+                                 Padding="24,8">
+
+                        <Label  Text="{x:Static fonts:FontAwesomeSolid.HSquare}"
+                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                TextColor="{StaticResource AltTextColor}"
+                                FontSize="20"
+                                HorizontalOptions="Start"
+                                VerticalTextAlignment="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding IsHost}"
+                                             Value="true">
+                                    <Setter Property="TextColor"
+                                            Value="{StaticResource HighlightColor}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference Page}, 
+                                                                        Path=BindingContext.ToggleHostCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label Text="{Binding Name, Mode=TwoWay}"
+                               TextColor="{StaticResource AltTextColor}"
+                               LineBreakMode="TailTruncation"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Center" />
+
+                        <Label  Text="{x:Static fonts:FontAwesomeSolid.TrashAlt}"
+                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                TextColor="{StaticResource AltTextColor}"
+                                FontSize="16"
+                                HorizontalOptions="EndAndExpand"
+                                VerticalTextAlignment="Center"
+                                Margin="16,0,0,0">
+
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference Page}, 
+                                                                        Path=BindingContext.DeleteGuestCommand}" 
+                                                      CommandParameter="{Binding .}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddToFriendsCommand}" />
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </Frame>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView HorizontalOptions="FillAndExpand">
+        <StackLayout Margin="16,24"
+                     Spacing="16"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+
+            <!--HEADER-->
+            <ContentView Margin="0,0,0,16"
+                         BackgroundColor="Transparent">
+
+                <Grid RowSpacing="0"
+                      ColumnSpacing="0">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label  Grid.Column="0"
+                            Text="{x:Static fonts:FontAwesomeSolid.ArrowLeft}"
+                            FontFamily="{StaticResource FontAwesomeSolid}"
+                            TextColor="{StaticResource SecondaryColor}"
+                            FontSize="24"
+                            HorizontalOptions="Start"
+                            VerticalTextAlignment="Center">
+
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                </Grid>
+            </ContentView>
+
+            <StackLayout Spacing="0">
+                <Label Text="Title "
+                       FontSize="14"
+                       TextColor="{StaticResource TertiaryTextColor}" />
+                <Entry Text="{Binding Event.Title}"
+                       FontSize="16"
+                       Placeholder="Required"
+                       TextColor="{StaticResource SecondaryColor}"
+                       PlaceholderColor="{StaticResource NegativeColor}">
+                </Entry>
+            </StackLayout>
+
+            <StackLayout Spacing="0">
+                <Label Text="Description"
+                       FontSize="14"
+                       TextColor="{StaticResource TertiaryTextColor}" />
+                <Editor Text="{Binding Event.Description}"
+                        FontSize="16"
+                        Placeholder=""
+                        TextColor="{StaticResource SecondaryColor}"
+                        PlaceholderColor="{StaticResource TertiaryColor}">
+                </Editor>
+            </StackLayout>
+
+            <!--DATE-->
+            <Grid ColumnSpacing="16"
+                  RowSpacing="0"
+                  Padding="0"
+                  Margin="0"
+                  HorizontalOptions="FillAndExpand">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Text="Start Date"
+                       FontSize="14"
+                       TextColor="{StaticResource TertiaryTextColor}" />
+
+                <DatePicker Grid.Row="1"
+                            Grid.Column="0"
+                            x:Name="startDatePicker"
+                            HorizontalOptions="StartAndExpand"
+                            VerticalOptions="Center"
+                            FontSize="16"
+                            Format="D"
+                            Date="{Binding EventStartDate}"
+                            TextColor="{StaticResource SecondaryColor}" />
+
+                <Label Grid.Row="0"
+                       Grid.Column="1"
+                       Text="End Date"
+                       FontSize="14"
+                       TextColor="{StaticResource TertiaryTextColor}" />
+
+                <DatePicker Grid.Row="1"
+                            Grid.Column="1"
+                            x:Name="endDatePicker"
+                            HorizontalOptions="StartAndExpand"
+                            VerticalOptions="Center"
+                            FontSize="16"
+                            Format="D"
+                            Date="{Binding EventEndDate}"
+                            TextColor="{StaticResource SecondaryColor}" />
+
+                <Label  Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        FontSize="14"
+                        TextColor="{StaticResource TertiaryTextColor}"
+                        HorizontalOptions="Start"
+                        Margin="0,4">
+                    <Label.FormattedText>
+                        <FormattedString>
+
+                            <Span Text="Event Span: "
+                                  FontSize="14" />
+                            <Span Text="{Binding EventSpan.Days}"
+                                  TextColor="{StaticResource SecondaryColor}"
+                                  FontAttributes="Bold"
+                                  FontSize="16" />
+                            <Span Text=" Days."
+                                  TextColor="{StaticResource SecondaryColor}"
+                                  FontAttributes="Bold"
+                                  FontSize="16" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+
+
+            <!--SPLIT STRATAGY-->
+            <StackLayout Spacing="0">
+                <Label Text="Select Transaction Strategy"
+                       FontSize="14"
+                       TextColor="{StaticResource TertiaryTextColor}" />
+                <Picker ItemsSource="{Binding TransactionStrategies}"
+                        ItemDisplayBinding="{Binding .}"
+                        SelectedIndex="{Binding SelectedTransactionStrategyIndex, Mode=TwoWay}"
+                        TextColor="{StaticResource SecondaryColor}"
+                        FontSize="16" />
+            </StackLayout>
+
+            <!--ADD GUESTS-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+
+
+                <Label Text="Personal"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       FontSize="14"
+                       TextColor="{StaticResource TertiaryTextColor}" />
+
+                <Entry Grid.Row="1"
+                       Grid.Column="0"
+                       x:Name="EntityEntry"
+                       Text="{Binding EntityName.Entry, Mode=TwoWay}"
+                       TextColor="{StaticResource SecondaryColor}"
+                       Placeholder="{Binding EntityName.ErrorMessage}"
+                       PlaceholderColor="{StaticResource NegativeColor}"
+                       ReturnCommand="{Binding AddGuestCommand}"
+                       FontSize="16"
+                       ReturnType="Default" />
+
+                <Label Grid.Row="1"
+                       Grid.Column="1"
+                       Text="{x:Static fonts:FontAwesomeSolid.PlusCircle}"
+                       FontFamily="{StaticResource FontAwesomeSolid}"
+                       TextColor="{StaticResource HighlightColor}"
+                       FontSize="32">
+
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddGuestCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Grid.Row="1"
+                       Grid.Column="2"
+                       Text="{x:Static fonts:FontAwesomeSolid.Users}"
+                       FontFamily="{StaticResource FontAwesomeSolid}"
+                       TextColor="{StaticResource TertiaryColor}"
+                       FontSize="32">
+
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddGuestsFromFriendsCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+            <!--GUEST LIST-->
+            <StackLayout BindableLayout.ItemsSource="{Binding Guests}"
+                         BindableLayout.ItemTemplate="{StaticResource GuestDataTemplate}"
+                         FlowDirection="LeftToRight"
+                         Orientation="Vertical" />
+
+            <Button Text="Create"
+                    CornerRadius="24"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="{StaticResource ActiveColor}"
+                    TextColor="{StaticResource AltTextColor}"
+                    Command="{Binding BuildEventCommand}"
+                    VerticalOptions="EndAndExpand">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding IsNew}"
+                                 Value="False">
+                        <Setter Property="Text"
+                                Value="Update" />
+
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

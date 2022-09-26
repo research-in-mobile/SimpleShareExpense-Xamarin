@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:prismbehaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:fonts="clr-namespace:Split.Fonts;assembly=Split"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             ios:Page.UseSafeArea="True"
+             NavigationPage.HasNavigationBar="false"
+             x:Class="Split.Views.HubPage"
+             x:Name="Hub"
+             BackgroundColor="{StaticResource BackgroundColor}"
+             Title="{Binding Title}"
+             Visual="Material">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate x:Key="EventDataTemplate">
+                <ViewCell>
+
+                    <ContentView Padding="16"
+                                 BackgroundColor="Transparent">
+
+                        <Frame CornerRadius="16"
+                               Padding="0"
+                               Margin="0">
+
+                            <Grid Padding="8"
+                                  Margin="0"
+                                  RowSpacing="0"
+                                  ColumnSpacing="0"
+                                  BackgroundColor="{StaticResource AltBackgroundColor}"
+                                  VerticalOptions="FillAndExpand">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="32" />
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--Left Column-->
+                                <StackLayout Grid.Row="0"
+                                             Grid.Column="0"
+                                             Padding="16,4,16,24"
+                                             Spacing="0">
+
+                                    <Label  Text="{Binding Title}"
+                                            TextColor="{StaticResource PrimaryTextColor}"
+                                            FontSize="16"
+                                            FontAttributes="Bold"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="StartAndExpand"
+                                            VerticalOptions="Start"
+                                            Padding="0,4" />
+
+
+                                    <Label  FontSize="12"
+                                            TextColor="{StaticResource SecondaryTextColor}"
+                                            HorizontalOptions="Start">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding StartDate, StringFormat='{0:dd MMM}'}" />
+                                                <Span Text=" - " />
+                                                <Span Text="{Binding EndDate, StringFormat='{0:dd MMM}'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+
+                                    <Label  Text="{Binding Description}"
+                                            TextColor="{StaticResource TertiaryTextColor}"
+                                            FontSize="14"
+                                            MaxLines="2"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="StartAndExpand"
+                                            VerticalOptions="Start"
+                                            Padding="0,4" />
+
+                                    <Label  Text="You're owed $XX.XX"
+                                            TextColor="{StaticResource PositiveColor}"
+                                            FontSize="14"
+                                            MaxLines="3"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="StartAndExpand"
+                                            VerticalOptions="Start"
+                                            Padding="0,4" />
+
+
+                                </StackLayout>
+
+                                <!--Right Column-->
+                                <StackLayout Grid.Row="0"
+                                             Grid.Column="1"
+                                             Padding="0,8,16,4"
+                                             Spacing="0">
+
+                                    <Label  Text="Total"
+                                            TextColor="{StaticResource PrimaryTextColor}"
+                                            FontSize="12"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="End"
+                                            Padding="0,0" />
+
+                                    <Label  Text="$XX.XX"
+                                            TextColor="{StaticResource PrimaryTextColor}"
+                                            FontSize="14"
+                                            FontAttributes="Bold"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Start"
+                                            Padding="0,0,0,4" />
+
+
+                                    <Label  Text="Your Spend"
+                                            TextColor="{StaticResource PrimaryTextColor}"
+                                            FontSize="12"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="End"
+                                            Padding="0,0" />
+
+                                    <Label  Text="$XX.XX"
+                                            TextColor="{StaticResource PrimaryTextColor}"
+                                            FontSize="14"
+                                            FontAttributes="Bold"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Start"
+                                            Padding="0,0,0,4" />
+
+
+                                    <Label  Text="Group Size"
+                                            TextColor="{StaticResource PrimaryTextColor}"
+                                            FontSize="12"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="End"
+                                            Padding="0,0" />
+
+                                    <Label  Text="XX"
+                                            TextColor="{StaticResource PrimaryTextColor}"
+                                            FontSize="14"
+                                            FontAttributes="Bold"
+                                            LineBreakMode="TailTruncation"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Start"
+                                            Padding="0,0" />
+
+                                </StackLayout>
+
+                                <!--Guests-->
+                                <ScrollView  Grid.Row="1"
+                                             Grid.Column="0"
+                                             Grid.ColumnSpan="2"
+                                             Padding="0"
+                                             Margin="16,2,16,2"
+                                             VerticalOptions="Start"
+                                             HorizontalOptions="FillAndExpand">
+                                    <StackLayout BindableLayout.ItemsSource="{Binding Guests}"
+                                                 Orientation="Horizontal"
+                                                 Spacing="8">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label  Text="{Binding Name}"
+                                                        TextColor="{StaticResource SecondaryTextColor}"
+                                                        Padding="2" />
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                </ScrollView>
+
+                            </Grid>
+
+                        </Frame>
+
+                    </ContentView>
+
+                </ViewCell>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <AbsoluteLayout>
+
+        <StackLayout Orientation="Vertical"
+                     Spacing="0"
+                     AbsoluteLayout.LayoutFlags="All"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     Margin="0">
+
+            <!--Header-->
+            <Grid BackgroundColor="{StaticResource BackgroundColor}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Text="Sign in"
+                       TextColor="{StaticResource SecondaryColor}"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       Margin="24,8"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       LineBreakMode="TailTruncation">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Hello "
+                                  FontSize="18" />
+                            <Span Text="{Binding AppUser.Name}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+
+                </Label>
+
+                <Label Text="Cloud Sync"
+                       TextColor="{StaticResource PrimaryColor}"
+                       FontSize="16"
+                       Margin="24,8"
+                       HorizontalOptions="End"
+                       VerticalOptions="Center">
+
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SigninCommand}" />
+                    </Label.GestureRecognizers>
+
+                </Label>
+
+            </Grid>
+
+            <!--Dash-->
+            <Frame CornerRadius="16"
+                   Padding="0"
+                   Margin="16,0,16,16">
+                <Grid BackgroundColor="{StaticResource PrimaryColor}"
+                      HeightRequest="200">
+
+
+                </Grid>
+            </Frame>
+
+            <!--Event List Static Header-->
+            <Grid Margin="0,16,0,0"
+                  BackgroundColor="Transparent">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Text="Grouped Expenses"
+                       TextColor="{StaticResource PrimaryTextColor}"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       Margin="16,2"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center">
+
+                </Label>
+            </Grid>
+
+            <!--Event List-->
+            <ListView ItemsSource="{Binding Events}"
+                      ItemTemplate="{DynamicResource EventDataTemplate}"
+                      CachingStrategy="RecycleElement"
+                      SeparatorVisibility="None"
+                      SelectionMode="None"
+                      HasUnevenRows="True">
+
+                <ListView.Behaviors>
+                    <prismbehaviors:EventToCommandBehavior EventName="ItemTapped"
+                                                           Command="{Binding EventSelectedCommand}"
+                                                           EventArgsParameterPath="Item" />
+                </ListView.Behaviors>
+
+                <ListView.Footer>
+                    <StackLayout HeightRequest="60" />
+                </ListView.Footer>
+
+            </ListView>
+
+        </StackLayout>
+
+
+        <Label Text="{x:Static fonts:FontAwesomeSolid.Circle}"
+               FontFamily="{StaticResource FontAwesomeSolid}"
+               TextColor="{StaticResource AltBackgroundColor}"
+               FontSize="50"
+               Margin="16"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="1, 1, AutoSize, 40" />
+
+        <Label Text="{x:Static fonts:FontAwesomeSolid.PlusCircle}"
+               FontFamily="{StaticResource FontAwesomeSolid}"
+               TextColor="{StaticResource HighlightColor}"
+               FontSize="50"
+               Margin="16"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="1, 1, AutoSize, 40">
+
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding AddEventCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+
+    </AbsoluteLayout>
+
+
+</ContentPage>
